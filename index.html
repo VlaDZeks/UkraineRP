@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LviviRP | Emergency Hamburg</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Загальні стилі */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1e1e1e;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0px 0px 10px #ff00ff;
+    }
+
+    .menu {
+      display: flex;
+      gap: 15px;
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .menu a:hover {
+      background: #800080;
+      color: #fff;
+      text-shadow: 0 0 10px #fff;
+    }
+
+    /* Панель з іконками */
+    .panel {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 250px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px;
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: left 0.3s ease-in-out;
+      z-index: 200;
+    }
+
+    .panel a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .panel a:hover {
+      background: #800080;
+      text-shadow: 0 0 10px #fff;
+    }
+
+    .panel-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #800080;
+      color: white;
+      font-size: 24px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 300;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+      transition: 0.3s;
+    }
+
+    .panel-button:hover {
+      background: #6a0dad;
+    }
+
+    /* Анімація відкриття панелі */
+    .panel.open {
+      left: 0;
+    }
+
+    /* Пошукова панель */
+    .search-bar {
+      position: fixed;
+      top: 80px; /* відстань від верхньої панелі */
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 5px 10px;
+      border: 2px solid #800080;
+      border-radius: 5px;
+      font-size: 16px;
+      z-index: 500;
+      width: 300px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 5px;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    /* Стилі для секцій */
+    .content-section {
+      display: none;
+      padding: 60px 20px;
+      text-align: center;
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 150px; /* Відстань до пошукової панелі */
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    /* Стилі для новин та промокодів на головній */
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .news-section {
+      width: 45%;
+    }
+
+    .promo-codes {
+      width: 45%;
+      background-color: #333;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .news {
+      background-color: #333;
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .news h3 {
+      font-size: 20px;
+      color: #ff00ff;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">UkraineRP</div>
+    <div class="menu">
+      <a href="#" onclick="showSection('home')"><i class="fa-solid fa-house"></i> Головна</a>
+      <a href="#" onclick="showSection('rules')"><i class="fa-solid fa-book"></i> Правила серверу</a>
+      <a href="#" onclick="showSection('players')"><i class="fa-solid fa-user"></i> Гравці серверу</a>
+      <a href="#" onclick="showSection('traffic')"><i class="fa-solid fa-road"></i> Правила дорожнього руху</a>
+    </div>
+  </div>
+
+  <!-- Панель -->
+  <button class="panel-button" onclick="togglePanel()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <div class="panel" id="sidePanel">
+    <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube"></i> Ютуб</a>
+    <a href="https://discord.com" target="_blank"><i class="fa-brands fa-discord"></i> Дискорд</a>
+    <a href="https://telegram.org" target="_blank"><i class="fa-brands fa-telegram"></i> Телеграм</a>
+    <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Інстаграм</a>
+  </div>
+
+  <!-- Пошукова панель -->
+  <div class="search-bar" id="searchBar">
+    <input type="text" id="searchInput" onkeyup="searchContent()" placeholder="Пошук...">
+  </div>
+
+  <!-- Контент секцій -->
+  <div class="content-section" id="homeSection">
+    <h2>Вітаємо на Головній сторінці!</h2>
+    <div class="main-content">
+      <div class="news-section">
+        <div class="news">
+          <h3>Новина 1: Оновлення сервера</h3>
+          <p>Ми провели оновлення сервера! Тепер доступно більше функцій для всіх гравців.</p>
+        </div>
+        <div class="news">
+          <h3>Новина 2: Подія у місті</h3>
+          <p>Не пропустіть нові події на сервері цього тижня! Буде цікаво!</p>
+        </div>
+      </div>
+      <div class="promo-codes">
+        <h3>Пропозиції та промокоди</h3>
+        <p>Залишайтеся з нами та отримуйте промокоди для нових можливостей на сервері!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Інші секції -->
+  <div class="content-section" id="rulesSection">
+    <h2><i class="fa-solid fa-book"></i> Правила серверу</h2>
+    <p>1. Правило 1: Повага до інших гравців.</p>
+    <p>2. Правило 2: Заборона на читерство.</p>
+    <p>3. Правило 3: Поважати адміністрацію.</p>
+  </div>
+
+  <div class="content-section" id="playersSection">
+    <h2><i class="fa-solid fa-user"></i> Гравці серверу</h2>
+    <p>Гравець 1: Активно грає та допомагає новачкам.</p>
+  </div>
+
+  <div class="content-section" id="trafficSection">
+    <h2><i class="fa-solid fa-road"></i> Правила дорожнього руху</h2>
+    <p>1. Правило 1: Не порушувати світлофор.</p>
+    <p>2. Правило 2: Першочерговість для пішоходів.</p>
+  </div>
+
+  <script>
+    let panelOpen = false;
+
+    function togglePanel() {
+      const panel = document.getElementById("sidePanel");
+      panelOpen = !panelOpen;
+      if (panelOpen) {
+        panel.classList.add("open");
+      } else {
+        panel.classList.remove("open");
+      }
+    }
+
+    function showSection(section) {
+      const sections = document.querySelectorAll(".content-section");
+      sections.forEach((sec) => sec.classList.remove("active"));
+      document.getElementById(section + "Section").classList.add("active");
+    }
+
+    function searchContent() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const sections = document.querySelectorAll(".content-section.active p");
+
+      sections.forEach((para) => {
+        const paraText = para.innerText.toLowerCase();
+        if (paraText.includes(input)) {
+          para.style.display = "block";
+        } else {
+          para.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
